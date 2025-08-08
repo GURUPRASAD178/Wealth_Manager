@@ -68,21 +68,17 @@ Backend: [https://wealth-api.render.com](https://wealth-api.render.com)
 
 ## ⚙️ Getting Started
 
-### 📦 Backend Setup
+ ### Frontend and Backend Setup
 
 ```bash
-git clone https://github.com/your-username/wealth-api.git
-cd wealth-api
+git clone https://github.com/guruprasad178/Wealth_Manager.git
+cd wealthmanager
 python -m venv env
 source env/bin/activate  # or env\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 
-### Frontend Setup
-
-```bash
-git clone https://github.com/your-username/wealth-dashboard.git
 cd wealth-dashboard
 npm install
 npm start
