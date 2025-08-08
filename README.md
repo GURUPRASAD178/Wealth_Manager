@@ -31,7 +31,7 @@ A full-stack portfolio analytics dashboard that provides investors with a detail
 Frontend: [https://wealth-dashboard.vercel.app](https://wealth-dashboard.vercel.app)  
 Backend: [https://wealth-api.render.com](https://wealth-api.render.com)
 
-> Replace the above with your actual deployed URLs
+
 
 ---
 
@@ -79,7 +79,7 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver
 
-
+**### Frontend Setup**
 git clone https://github.com/your-username/wealth-dashboard.git
 cd wealth-dashboard
 npm install
