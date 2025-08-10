@@ -34,26 +34,45 @@ const OverviewCards = () => {
   if (loading || !summary) return <div>Loading portfolio summary...</div>;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-      <div className="bg-white shadow rounded p-4">
-        <h2 className="text-sm text-gray-500">Total Portfolio Value</h2>
-        <p className="text-xl font-bold text-blue-600">₹ {summary.totalValue.toLocaleString()}</p>
+    <div className="row mb-4">
+      <div className="col-md-3 mb-3">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h6 className="text-muted mb-1">Total Portfolio Value</h6>
+            <h4 className="fw-bold text-primary">₹ {summary.totalValue.toLocaleString()}</h4>
+          </div>
+        </div>
       </div>
-      <div className={`shadow rounded p-4 ${summary.totalGainLoss >= 0 ? 'bg-green-50' : 'bg-red-50'}`}>
-        <h2 className="text-sm text-gray-500">Total Gain / Loss</h2>
-        <p className={`text-xl font-bold ${summary.totalGainLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-          ₹ {summary.totalGainLoss.toLocaleString()}
-        </p>
+
+      <div className="col-md-3 mb-3">
+        <div className={`card shadow-sm ${summary.totalGainLoss >= 0 ? 'bg-success bg-opacity-10' : 'bg-danger bg-opacity-10'}`}>
+          <div className="card-body">
+            <h6 className="text-muted mb-1">Total Gain / Loss</h6>
+            <h4 className={`fw-bold ${summary.totalGainLoss >= 0 ? 'text-success' : 'text-danger'}`}>
+              ₹ {summary.totalGainLoss.toLocaleString()}
+            </h4>
+          </div>
+        </div>
       </div>
-      <div className={`shadow rounded p-4 ${summary.totalGainLossPercent >= 0 ? 'bg-green-50' : 'bg-red-50'}`}>
-        <h2 className="text-sm text-gray-500">Portfolio Performance</h2>
-        <p className={`text-xl font-bold ${summary.totalGainLossPercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {summary.totalGainLossPercent}%
-        </p>
+
+      <div className="col-md-3 mb-3">
+        <div className={`card shadow-sm ${summary.totalGainLossPercent >= 0 ? 'bg-success bg-opacity-10' : 'bg-danger bg-opacity-10'}`}>
+          <div className="card-body">
+            <h6 className="text-muted mb-1">Portfolio Performance</h6>
+            <h4 className={`fw-bold ${summary.totalGainLossPercent >= 0 ? 'text-success' : 'text-danger'}`}>
+              {summary.totalGainLossPercent}%
+            </h4>
+          </div>
+        </div>
       </div>
-      <div className="bg-white shadow rounded p-4">
-        <h2 className="text-sm text-gray-500">Number of Holdings</h2>
-        <p className="text-xl font-bold text-gray-700">{holdingsCount}</p>
+
+      <div className="col-md-3 mb-3">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h6 className="text-muted mb-1">Number of Holdings</h6>
+            <h4 className="fw-bold text-dark">{holdingsCount}</h4>
+          </div>
+        </div>
       </div>
     </div>
   );

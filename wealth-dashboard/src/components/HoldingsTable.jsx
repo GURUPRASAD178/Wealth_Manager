@@ -55,49 +55,54 @@ const HoldingsTable = () => {
   };
 
   return (
-    <div className="bg-white shadow rounded p-4 mb-6 overflow-x-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">Holdings</h3>
-        <input
-          type="text"
-          placeholder="Search..."
-          className="border p-2 rounded text-sm"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+    <div className="card shadow-sm mb-4">
+      <div className="card-body">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h5 className="fw-semibold mb-0">Holdings</h5>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="form-control form-control-sm w-auto"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        <div className="table-responsive">
+          <table className="table table-striped table-hover align-middle text-nowrap">
+            <thead className="table-light">
+              <tr>
+                <th onClick={() => handleSort('symbol')} role="button">Symbol ⬍</th>
+                <th onClick={() => handleSort('name')} role="button">Name ⬍</th>
+                <th onClick={() => handleSort('quantity')} role="button">Qty</th>
+                <th>Avg Price</th>
+                <th>Current Price</th>
+                <th onClick={() => handleSort('value')} role="button">Value ⬍</th>
+                <th onClick={() => handleSort('gainLoss')} role="button">Gain/Loss ⬍</th>
+                <th onClick={() => handleSort('gainLossPercent')} role="button">% Gain ⬍</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredHoldings.map((h, i) => (
+                <tr key={i}>
+                  <td>{h.symbol}</td>
+                  <td>{h.name}</td>
+                  <td>{h.quantity}</td>
+                  <td>₹ {h.avgPrice}</td>
+                  <td>₹ {h.currentPrice}</td>
+                  <td>₹ {h.value}</td>
+                  <td className={h.gainLoss >= 0 ? 'text-success' : 'text-danger'}>
+                    ₹ {h.gainLoss}
+                  </td>
+                  <td className={h.gainLossPercent >= 0 ? 'text-success' : 'text-danger'}>
+                    {h.gainLossPercent}%
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <table className="w-full text-sm text-left border-collapse">
-        <thead>
-          <tr className="border-b text-gray-700">
-            <th onClick={() => handleSort('symbol')} className="cursor-pointer">Symbol ⬍</th>
-            <th onClick={() => handleSort('name')} className="cursor-pointer">Name ⬍</th>
-            <th onClick={() => handleSort('quantity')}>Qty</th>
-            <th>Avg Price</th>
-            <th>Current Price</th>
-            <th onClick={() => handleSort('value')} className="cursor-pointer">Value ⬍</th>
-            <th onClick={() => handleSort('gainLoss')} className="cursor-pointer">Gain/Loss ⬍</th>
-            <th onClick={() => handleSort('gainLossPercent')} className="cursor-pointer">% Gain ⬍</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredHoldings.map((h, i) => (
-            <tr key={i} className="border-b">
-              <td className="py-1">{h.symbol}</td>
-              <td>{h.name}</td>
-              <td>{h.quantity}</td>
-              <td>₹ {h.avgPrice}</td>
-              <td>₹ {h.currentPrice}</td>
-              <td>₹ {h.value}</td>
-              <td className={h.gainLoss >= 0 ? 'text-green-600' : 'text-red-600'}>
-                ₹ {h.gainLoss}
-              </td>
-              <td className={h.gainLossPercent >= 0 ? 'text-green-600' : 'text-red-600'}>
-                {h.gainLossPercent}%
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 };

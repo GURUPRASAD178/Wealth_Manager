@@ -7,13 +7,29 @@ import TopPerformers from '../components/TopPerformers';
 
 const Dashboard = () => {
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold mb-6">Portfolio Analytics Dashboard</h1>
-      <OverviewCards />
-      <AllocationCharts />
-      <HoldingsTable />
-      <PerformanceChart />
-      <TopPerformers />
+    <div className="container py-4">
+      <h1 className="display-5 fw-bold mb-4 text-primary">WEALTH MANAGER - Portfolio Analytics Dashboard</h1>
+
+      {/* You can wrap sections in Bootstrap grid if needed */}
+      <div className="mb-4">
+        <OverviewCards />
+      </div>
+
+      <div className="mb-4">
+        <AllocationCharts />
+      </div>
+
+      <div className="mb-4">
+        <HoldingsTable />
+      </div>
+
+      <div className="mb-4">
+        <PerformanceChart />
+      </div>
+
+      <div className="mb-4">
+        <TopPerformers />
+      </div>
     </div>
   );
 };

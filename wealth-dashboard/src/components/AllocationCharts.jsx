@@ -40,39 +40,49 @@ const AllocationCharts = () => {
   const marketCapData = marketCapLabels.map(key => allocation.byMarketCap[key].value);
 
   return (
-    <div className="grid md:grid-cols-2 gap-8 mb-6">
-      <div className="bg-white p-4 shadow rounded">
-        <h3 className="text-lg font-semibold mb-2">Sector Allocation</h3>
-        <Pie
-          data={{
-            labels: sectorLabels,
-            datasets: [{
-              label: 'By Sector',
-              data: sectorData,
-              backgroundColor: ['#4ade80', '#60a5fa', '#fcd34d', '#f87171'],
-            }]
-          }}
-        />
+    <div className="row g-4 mb-4">
+      {/* Sector Allocation */}
+      <div className="col-md-6">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h5 className="card-title fw-semibold mb-3">Sector Allocation</h5>
+            <Pie
+              data={{
+                labels: sectorLabels,
+                datasets: [{
+                  label: 'By Sector',
+                  data: sectorData,
+                  backgroundColor: ['#4ade80', '#60a5fa', '#fcd34d', '#f87171'],
+                }]
+              }}
+            />
+          </div>
+        </div>
       </div>
 
-      <div className="bg-white p-4 shadow rounded">
-        <h3 className="text-lg font-semibold mb-2">Market Cap Allocation</h3>
-        <Bar
-          data={{
-            labels: marketCapLabels,
-            datasets: [{
-              label: 'By Market Cap',
-              data: marketCapData,
-              backgroundColor: ['#6366f1', '#facc15', '#f472b6'],
-            }]
-          }}
-          options={{
-            responsive: true,
-            plugins: {
-              legend: { display: false },
-            },
-          }}
-        />
+      {/* Market Cap Allocation */}
+      <div className="col-md-6">
+        <div className="card shadow-sm">
+          <div className="card-body">
+            <h5 className="card-title fw-semibold mb-3">Market Cap Allocation</h5>
+            <Bar
+              data={{
+                labels: marketCapLabels,
+                datasets: [{
+                  label: 'By Market Cap',
+                  data: marketCapData,
+                  backgroundColor: ['#6366f1', '#facc15', '#f472b6'],
+                }]
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { display: false },
+                },
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
