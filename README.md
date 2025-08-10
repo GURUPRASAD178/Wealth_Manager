@@ -28,7 +28,7 @@ A full-stack portfolio analytics dashboard that provides investors with a detail
 
 ## 🖥️ Live Demo
 
-Frontend: [https://wealth-dashboard.vercel.app](https://wealth-dashboard.vercel.app)  
+Frontend: [https://wealth-manager-blush.vercel.app/](https://wealth-manager-blush.vercel.app/)
 Backend: [https://wealth-api.render.com](https://wealth-api.render.com)
 
 
