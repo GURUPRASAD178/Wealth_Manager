@@ -28,8 +28,8 @@ A full-stack portfolio analytics dashboard that provides investors with a detail
 
 ## 🖥️ Live Demo
 
-Frontend: [https://wealth-manager-blush.vercel.app/](https://wealth-manager-blush.vercel.app/)
-Backend: [https://wealth-api.render.com](https://wealth-api.render.com)
+Frontend: [https://wealth-manager-blush.vercel.app/](https://wealth-manager-blush.vercel.app/) <br>
+Backend: [https://wealth-manager-q43n.onrender.com/](https://wealth-manager-q43n.onrender.com/)
 
 
 
