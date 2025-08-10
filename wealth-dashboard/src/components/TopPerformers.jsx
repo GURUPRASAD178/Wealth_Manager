@@ -31,17 +31,17 @@ const TopPerformers = () => {
                 {/* Best Performer */}
                 <div className="p-4 border-l-4 border-green-500 bg-green-50 rounded">
                     <h4 className="text-green-700 font-semibold">Top Performer</h4>
-                    {/* <p className="text-sm">Symbol: <strong>{topPerformer.symbol}</strong></p> */}
-                    {/* <p className="text-sm">Name: <strong>{topPerformer.name}</strong></p> */}
-                    {/* <p className="text-sm">Gain: <span className="text-green-600">{topPerformer.gainPercent}%</span></p> */}
+                    <p className="text-sm">Symbol: <strong>{topPerformer.symbol}</strong></p>
+                    <p className="text-sm">Name: <strong>{topPerformer.name}</strong></p>
+                    <p className="text-sm">Gain: <span className="text-green-600">{topPerformer.gainPercent}%</span></p>
                 </div>
 
                 {/* Worst Performer */}
                 <div className="p-4 border-l-4 border-red-500 bg-red-50 rounded">
                     <h4 className="text-red-700 font-semibold">Worst Performer</h4>
-                    {/* <p className="text-sm">Symbol: <strong>{worstPerformer.symbol}</strong></p> */}
-                    {/* <p className="text-sm">Name: <strong>{worstPerformer.name}</strong></p> */}
-                    {/* <p className="text-sm">Loss: <span className="text-red-600">{worstPerformer.gainPercent}%</span></p> */}
+                    <p className="text-sm">Symbol: <strong>{worstPerformer.symbol}</strong></p>
+                    <p className="text-sm">Name: <strong>{worstPerformer.name}</strong></p>
+                    <p className="text-sm">Loss: <span className="text-red-600">{worstPerformer.gainPercent}%</span></p>
                 </div>
             </div>
 

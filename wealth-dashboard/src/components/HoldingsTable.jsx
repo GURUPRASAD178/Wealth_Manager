@@ -71,7 +71,7 @@ const HoldingsTable = () => {
           <tr className="border-b text-gray-700">
             <th onClick={() => handleSort('symbol')} className="cursor-pointer">Symbol ⬍</th>
             <th onClick={() => handleSort('name')} className="cursor-pointer">Name ⬍</th>
-            <th>Qty</th>
+            <th onClick={() => handleSort('quantity')}>Qty</th>
             <th>Avg Price</th>
             <th>Current Price</th>
             <th onClick={() => handleSort('value')} className="cursor-pointer">Value ⬍</th>
@@ -87,9 +87,9 @@ const HoldingsTable = () => {
               <td>{h.quantity}</td>
               <td>₹ {h.avgPrice}</td>
               <td>₹ {h.currentPrice}</td>
-              <td>₹ {h.value.toLocaleString()}</td>
+              <td>₹ {h.value}</td>
               <td className={h.gainLoss >= 0 ? 'text-green-600' : 'text-red-600'}>
-                ₹ {h.gainLoss.toLocaleString()}
+                ₹ {h.gainLoss}
               </td>
               <td className={h.gainLossPercent >= 0 ? 'text-green-600' : 'text-red-600'}>
                 {h.gainLossPercent}%
