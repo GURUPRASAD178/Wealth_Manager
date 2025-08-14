@@ -31,19 +31,23 @@ const PerformanceChart = () => {
     const fetchPerformance = async () => {
       try {
         const res = await api.get('/portfolio/performance');
-        setTimelineData(res.data.timeline);
-        setReturnsData(res.data.returns);
-        setLoading(false);
+        setTimelineData(res.data.timeline || []);
+        setReturnsData(res.data.returns || null);
       } catch (err) {
         console.error("Error fetching performance:", err);
+      } finally {
         setLoading(false);
       }
     };
     fetchPerformance();
   }, []);
 
-  if (loading || !timelineData.length) {
+  if (loading) {
     return <div className="alert alert-info">Loading performance chart...</div>;
+  }
+
+  if (!timelineData.length) {
+    return <div className="alert alert-warning">No performance data available.</div>;
   }
 
   const labels = timelineData.map(entry => entry.date);
@@ -88,9 +92,7 @@ const PerformanceChart = () => {
           options={{
             responsive: true,
             plugins: {
-              legend: {
-                position: 'top',
-              },
+              legend: { position: 'top' },
               tooltip: {
                 callbacks: {
                   label: (ctx) => `${ctx.dataset.label}: ₹ ${ctx.parsed.y.toLocaleString()}`,
@@ -98,18 +100,8 @@ const PerformanceChart = () => {
               }
             },
             scales: {
-              y: {
-                title: {
-                  display: true,
-                  text: 'Value (INR)',
-                },
-              },
-              x: {
-                title: {
-                  display: true,
-                  text: 'Date',
-                },
-              }
+              y: { title: { display: true, text: 'Value (INR)' } },
+              x: { title: { display: true, text: 'Date' } }
             }
           }}
         />
@@ -120,9 +112,15 @@ const PerformanceChart = () => {
               <div key={asset} className="col-md-4 mb-3">
                 <div className="p-3 border rounded bg-light">
                   <h6 className="fw-semibold text-capitalize">{asset}</h6>
-                  <p className="mb-1">1 Month: {returnsData[asset]["1month"]}%</p>
-                  <p className="mb-1">3 Months: {returnsData[asset]["3months"]}%</p>
-                  <p className="mb-0">1 Year: {returnsData[asset]["1year"]}%</p>
+                  {returnsData[asset] ? (
+                    <>
+                      <p className="mb-1">1 Month: {returnsData[asset]["1month"]}%</p>
+                      <p className="mb-1">3 Months: {returnsData[asset]["3months"]}%</p>
+                      <p className="mb-0">1 Year: {returnsData[asset]["1year"]}%</p>
+                    </>
+                  ) : (
+                    <p className="text-muted mb-0">No return data</p>
+                  )}
                 </div>
               </div>
             ))}

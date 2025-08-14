@@ -5,7 +5,7 @@ from .models import Holding
 
 @admin.register(Holding)
 class HoldingAdmin(admin.ModelAdmin):
-    list_display = ('symbol', 'name', 'sector', 'market_cap', 'value', 'quantity')
+    list_display = ('symbol', 'name', 'quantity', 'avg_price', 'value_inr', 'gain_loss_inr', 'gain_loss_percent')
     search_fields = ('symbol', 'name')
     list_filter = ('sector', 'market_cap')
     list_per_page = 20

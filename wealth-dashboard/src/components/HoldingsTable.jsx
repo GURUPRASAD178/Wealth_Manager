@@ -77,9 +77,9 @@ const HoldingsTable = () => {
                 <th onClick={() => handleSort('quantity')} role="button">Qty</th>
                 <th>Avg Price</th>
                 <th>Current Price</th>
-                <th onClick={() => handleSort('value')} role="button">Value ⬍</th>
-                <th onClick={() => handleSort('gainLoss')} role="button">Gain/Loss ⬍</th>
-                <th onClick={() => handleSort('gainLossPercent')} role="button">% Gain ⬍</th>
+                <th onClick={() => handleSort('value_inr')} role="button">Value ⬍</th>
+                <th onClick={() => handleSort('gain_loss_inr')} role="button">Gain/Loss ⬍</th>
+                <th onClick={() => handleSort('gain_loss_percent')} role="button">% Gain ⬍</th>
               </tr>
             </thead>
             <tbody>
@@ -88,14 +88,14 @@ const HoldingsTable = () => {
                   <td>{h.symbol}</td>
                   <td>{h.name}</td>
                   <td>{h.quantity}</td>
-                  <td>₹ {h.avgPrice}</td>
-                  <td>₹ {h.currentPrice}</td>
-                  <td>₹ {h.value}</td>
-                  <td className={h.gainLoss >= 0 ? 'text-success' : 'text-danger'}>
-                    ₹ {h.gainLoss}
+                  <td>₹ {h.avg_price}</td>
+                  <td>₹ {h.current_price}</td>
+                  <td>₹ {h.value_inr}</td>
+                  <td className={h.gain_loss_inr >= 0 ? 'text-success' : 'text-danger'}>
+                    ₹ {h.gain_loss_inr}
                   </td>
-                  <td className={h.gainLossPercent >= 0 ? 'text-success' : 'text-danger'}>
-                    {h.gainLossPercent}%
+                  <td className={h.gain_loss_percent >= 0 ? 'text-success' : 'text-danger'}>
+                    {h.gain_loss_percent}%
                   </td>
                 </tr>
               ))}
