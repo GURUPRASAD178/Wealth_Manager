@@ -3,6 +3,52 @@ from rest_framework.response import Response
 from collections import defaultdict
 from .models import Holding
 from .serializers import HoldingSerializer
+import requests
+from datetime import date
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from nsepython import nse_index  # NSEPython library
+from django.conf import settings
+
+from .models import Holding
+
+def fetch_nifty50_live():
+    data = nse_index('NIFTY 50')
+    return data.get('lastPrice') if data else None
+
+def fetch_gold_inr():
+    url = f"https://metals-api.com/api/gold-price-india?access_key={settings.METALS_API_KEY}&symbols=GOLD"
+    resp = requests.get(url)
+    if resp.ok:
+        data = resp.json()
+        return data.get('rates', {}).get('Gold')
+    return None
+
+@api_view(['GET'])
+def get_performance(request):
+    holdings = Holding.objects.all()
+    portfolio_value = sum(h.quantity * h.current_price for h in holdings)
+
+    nifty_value = fetch_nifty50_live() or 0
+    gold_value = fetch_gold_inr() or 0
+    today = date.today().strftime("%Y-%m-%d")
+
+    return Response({
+        "timeline": [
+            {
+                "date": today,
+                "portfolio": round(portfolio_value, 2),
+                "nifty50": nifty_value,
+                "gold": gold_value
+            }
+        ],
+        "returns": {
+            "portfolio": {"1month": None, "3months": None, "1year": None},
+            "nifty50": {"1month": None, "3months": None, "1year": None},
+            "gold": {"1month": None, "3months": None, "1year": None}
+        }
+    })
+
 
 @api_view(['GET'])
 def get_holdings(request):
@@ -34,22 +80,6 @@ def get_allocation(request):
         "byMarketCap": by_market_cap
     })
 
-
-@api_view(['GET'])
-def get_performance(request):
-    # Later, load from your Historical_Performance sheet in DB
-    return Response({
-        "timeline": [
-            {"date": "2024-01-01", "portfolio": 650000, "nifty50": 21000, "gold": 62000},
-            {"date": "2024-03-01", "portfolio": 680000, "nifty50": 22100, "gold": 64500},
-            {"date": "2024-06-01", "portfolio": 700000, "nifty50": 23500, "gold": 68000}
-        ],
-        "returns": {
-            "portfolio": {"1month": 2.3, "3months": 8.1, "1year": 15.7},
-            "nifty50": {"1month": 1.8, "3months": 6.2, "1year": 12.4},
-            "gold": {"1month": -0.5, "3months": 4.1, "1year": 8.9}
-        }
-    })
 
 
 @api_view(['GET'])
