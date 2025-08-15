@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+INSTALLED_APPS += ['django_crontab']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # for serving static files

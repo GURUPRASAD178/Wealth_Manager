@@ -3,51 +3,109 @@ from rest_framework.response import Response
 from collections import defaultdict
 from .models import Holding
 from .serializers import HoldingSerializer
-import requests
 from datetime import date
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from nsepython import nse_index  # NSEPython library
-from django.conf import settings
+import yfinance as yf
+from .models import Holding, HistoricalPerformance
 
-from .models import Holding
-
-def fetch_nifty50_live():
-    data = nse_index('NIFTY 50')
-    return data.get('lastPrice') if data else None
-
-def fetch_gold_inr():
-    url = f"https://metals-api.com/api/gold-price-india?access_key={settings.METALS_API_KEY}&symbols=GOLD"
-    resp = requests.get(url)
-    if resp.ok:
-        data = resp.json()
-        return data.get('rates', {}).get('Gold')
+def fetch_price(symbol):
+    ticker = yf.Ticker(symbol)
+    data = ticker.history(period="1d", interval="1m")
+    if not data.empty:
+        return round(data['Close'][-1], 2)
     return None
 
 @api_view(['GET'])
 def get_performance(request):
+    today = date.today()
+
+    # Calculate portfolio value
     holdings = Holding.objects.all()
     portfolio_value = sum(h.quantity * h.current_price for h in holdings)
 
-    nifty_value = fetch_nifty50_live() or 0
-    gold_value = fetch_gold_inr() or 0
-    today = date.today().strftime("%Y-%m-%d")
+    # Fetch real-time Nifty50 & Gold
+    nifty_value = fetch_price("^NSEI") or 0
+    gold_value = fetch_price("GOLDINR=X") or 0
+
+    # Save snapshot if not already stored today
+    if not HistoricalPerformance.objects.filter(date=today).exists():
+        HistoricalPerformance.objects.create(
+            date=today,
+            portfolio_value=portfolio_value,
+            nifty50_value=nifty_value,
+            gold_value=gold_value
+        )
+
+    # Prepare timeline for chart
+    history = HistoricalPerformance.objects.order_by('date')
+    timeline = [
+        {
+            "date": hp.date.strftime("%Y-%m-%d"),
+            "portfolio": hp.portfolio_value,
+            "nifty50": hp.nifty50_value,
+            "gold": hp.gold_value
+        }
+        for hp in history
+    ]
+
+    # Simple returns calculation
+    def calc_return(values):
+        if len(values) < 2:
+            return {"1month": None, "3months": None, "1year": None}
+        first = values[0]
+        last = values[-1]
+        return_percent = round(((last - first) / first) * 100, 2)
+        return {
+            "1month": return_percent if len(values) >= 30 else None,
+            "3months": return_percent if len(values) >= 90 else None,
+            "1year": return_percent if len(values) >= 365 else None
+        }
+
+    returns = {
+        "portfolio": calc_return([hp.portfolio_value for hp in history]),
+        "nifty50": calc_return([hp.nifty50_value for hp in history]),
+        "gold": calc_return([hp.gold_value for hp in history])
+    }
 
     return Response({
-        "timeline": [
-            {
-                "date": today,
-                "portfolio": round(portfolio_value, 2),
-                "nifty50": nifty_value,
-                "gold": gold_value
-            }
-        ],
-        "returns": {
-            "portfolio": {"1month": None, "3months": None, "1year": None},
-            "nifty50": {"1month": None, "3months": None, "1year": None},
-            "gold": {"1month": None, "3months": None, "1year": None}
-        }
+        "timeline": timeline,
+        "returns": returns
     })
+
+
+from datetime import date
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import HistoricalPerformance, Holding
+import yfinance as yf
+
+def fetch_price(symbol):
+    try:
+        data = yf.download(symbol, period="1d", interval="1d")
+        return float(data['Close'].iloc[-1])
+    except:
+        return None
+
+@api_view(['POST'])
+def record_daily_snapshot(request):
+    today = date.today()
+    if HistoricalPerformance.objects.filter(date=today).exists():
+        return Response({"message": "Snapshot already exists"}, status=200)
+
+    holdings = Holding.objects.all()
+    portfolio_value = sum(h.quantity * h.current_price for h in holdings)
+    nifty_value = fetch_price("^NSEI") or 0
+    gold_value = fetch_price("GOLDINR=X") or 0
+
+    HistoricalPerformance.objects.create(
+        date=today,
+        portfolio_value=portfolio_value,
+        nifty50_value=nifty_value,
+        gold_value=gold_value
+    )
+    return Response({"message": "Snapshot recorded successfully"}, status=201)
+
 
 
 @api_view(['GET'])

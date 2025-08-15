@@ -51,3 +51,12 @@ class Holding(models.Model):
     def __str__(self):
         return f"{self.symbol} - {self.name}"
 
+
+class HistoricalPerformance(models.Model):
+    date = models.DateField(unique=True)
+    portfolio_value = models.FloatField()
+    nifty50_value = models.FloatField()
+    gold_value = models.FloatField()
+
+    def __str__(self):
+        return f"{self.date} | Portfolio: {self.portfolio_value}"
